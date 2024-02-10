@@ -1,14 +1,23 @@
-/* eslint-disable @next/next/no-img-element */
-'use client';
-import React from 'react';
-
-
-const Dashboard = () => {
+import Image from 'next/image'
+export default function Home() {
 
     return (
-        <div>
-        </div>
+        <>
+            <div className="card" style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "580px",
+                marginBottom: "0",
+            }}>
+                <Image
+                    src={`/logo-white.svg`}
+                    alt="Sakai logo"
+                    width={300}
+                    height={300}
+                />
+            </div>
+        </>
     );
-};
-
-export default Dashboard;
+}
