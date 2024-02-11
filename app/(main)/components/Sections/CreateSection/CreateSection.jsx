@@ -81,12 +81,11 @@ export default function CreateSection() {
                     />
                 </div>
                 <div className="col-12 mb-2 lg:mb-2">
-                    <label className={"mb-2 block"} htmlFor="male-image">FILES</label>
+                    <label className={"mb-2 block"} htmlFor="male-image">Section Image</label>
                     <CustomFileUpload
                         setFiles={(files) => {
                             setForm({ ...form, files })
                         }}
-                        multiple
                         removeThisItem={(index) => {
                             // ITEMS COPY
                             const items = [...form?.files || []]

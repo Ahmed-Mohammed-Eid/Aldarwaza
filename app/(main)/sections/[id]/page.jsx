@@ -1,7 +1,12 @@
+// COMPONENTS
 import EditSection from '../../components/Sections/EditSection/EditSection';
 
-export default function EditSectionPage() {
+
+export default async function EditSectionPage({params}) {
+    // DYNAMIC ROUTE
+    const { id } = params
+
     return (
-        <EditSection />
+        <EditSection sectionId={id} />
     );
 }

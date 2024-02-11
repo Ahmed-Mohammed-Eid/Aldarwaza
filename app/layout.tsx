@@ -1,6 +1,7 @@
 'use client';
 import { LayoutProvider } from '../layout/context/layoutcontext';
 import { PrimeReactProvider } from 'primereact/api';
+import { Toaster } from 'react-hot-toast';
 import 'primereact/resources/primereact.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
@@ -20,7 +21,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </head>
             <body>
                 <PrimeReactProvider>
-                    <LayoutProvider>{children}</LayoutProvider>
+                    <LayoutProvider>
+                        {children}
+                        <Toaster
+                            position="bottom-right"
+                        />
+                    </LayoutProvider>
                 </PrimeReactProvider>
             </body>
         </html>

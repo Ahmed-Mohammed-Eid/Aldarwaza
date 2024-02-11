@@ -1,5 +1,5 @@
 "use client";
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomFileUpload from "../../Layout/customFileUpload/customFileUpload";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
@@ -7,7 +7,7 @@ import {ProgressSpinner} from "primereact/progressspinner";
 import {toast} from "react-hot-toast";
 import axios from "axios";
 
-export default function EditSection() {
+export default function EditSection({sectionId }) {
 
     // LOADING STATE
     const [loading, setLoading] = useState(false);
@@ -18,6 +18,32 @@ export default function EditSection() {
         files: []
     });
 
+    function getSection(id) {
+        // GET THE TOKEN FROM THE COOKIES
+        const token = localStorage.getItem("token");
+
+        axios.get(`${process.env.API_URL}/section?sectionId=${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then(res => {
+                const section = res.data.section;
+                setForm({
+                    sectionTitle: section.title,
+                    files: []
+                })
+            })
+            .catch(error => {
+                toast.error(error?.response?.data?.message || 'An error occurred while getting the section.');
+            })
+    }
+
+    // EFFECT TO SET THE FORM VALUES
+    useEffect(() => {
+        getSection(sectionId);
+    }, [sectionId]);
+
     // HANDLERS
     function editSection(event) {
         // PREVENT THE DEFAULT BEHAVIOUR
@@ -27,7 +53,7 @@ export default function EditSection() {
         const token = localStorage.getItem("token");
 
         // VALIDATE THE FORM
-        if (!form.sectionTitle || !form.files || form.files.length < 1) {
+        if (!form.sectionTitle) {
             toast.error("Please fill all the fields.");
             return;
         }
@@ -44,15 +70,15 @@ export default function EditSection() {
 
         // APPEND THE TITLE
         formData.append("sectionTitle", form.sectionTitle);
+        formData.append("sectionId", sectionId);
 
         // APPEND THE FILES
         for (let i = 0; i < form.files.length; i++) {
             formData.append("files", form.files[i]);
         }
 
-
         // SEND THE REQUEST
-        axios.post(`${process.env.API_URL}/edit/section`, formData, {
+        axios.put(`${process.env.API_URL}/edit/section`, formData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -83,12 +109,11 @@ export default function EditSection() {
                     />
                 </div>
                 <div className="col-12 mb-2 lg:mb-2">
-                    <label className={"mb-2 block"} htmlFor="male-image">FILES</label>
+                    <label className={"mb-2 block"} htmlFor="male-image">Section Image</label>
                     <CustomFileUpload
                         setFiles={(files) => {
                             setForm({ ...form, files })
                         }}
-                        multiple
                         removeThisItem={(index) => {
                             // ITEMS COPY
                             const items = [...form?.files || []]

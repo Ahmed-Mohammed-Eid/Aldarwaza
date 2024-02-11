@@ -16,7 +16,7 @@ const AppMenu = () => {
             label: 'Sections',
             items: [
                 {label: 'Sections List', icon: 'pi pi-fw pi-list', to: '/sections'},
-                {label: 'Add Media', icon: 'pi pi-fw pi-plus', to: '/sections/create'}
+                    {label: 'Add Section', icon: 'pi pi-fw pi-plus', to: '/sections/create'}
             ]
         },
         {

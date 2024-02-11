@@ -1,5 +1,5 @@
 "use client";
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomFileUpload from "../../Layout/customFileUpload/customFileUpload";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
@@ -8,7 +8,7 @@ import {toast} from "react-hot-toast";
 import axios from "axios";
 import { Dropdown } from 'primereact/dropdown';
 
-export default function EditMedia() {
+export default function EditMedia({mediaId}) {
 
     // LOADING STATE
     const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ export default function EditMedia() {
         const token = localStorage.getItem("token");
 
         // VALIDATE THE FORM
-        if (!form.mediaTitle || !form.files || form.files.length < 1) {
+        if (!form.mediaTitle) {
             toast.error("Please fill all the fields.");
             return;
         }
@@ -47,16 +47,18 @@ export default function EditMedia() {
 
 
         // APPEND THE TITLE
-        formData.append("mediaTitle", form.mediaTitle);
+        formData.append('title', form.mediaTitle);
+        formData.append('sectionId', form.sectionId);
+        formData.append('mediaType', form.mediaType);
+        formData.append('mediaId', mediaId);
 
         // APPEND THE FILES
         for (let i = 0; i < form.files.length; i++) {
             formData.append("files", form.files[i]);
         }
 
-
         // SEND THE REQUEST
-        axios.post(`${process.env.API_URL}/edit/media`, formData, {
+        axios.put(`${process.env.API_URL}/edit/media`, formData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -72,20 +74,58 @@ export default function EditMedia() {
     }
     // GET SECTIONS HANDLER
     function getSections() {
-        axios.get(`${process.env.API_URL}/get/sections`)
-            .then(response => {
+        // GET THE TOKEN FROM THE LOCAL STORAGE
+        const token = localStorage.getItem('token');
 
+        axios.get(`${process.env.API_URL}/sections`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                // LOOP THROUGH THE SECTIONS AND CREATE A NEW ARRAY WITH THE LABEL FROM TITLE AND THE VALUE FROM _ID
+                const sectionsList = response.data?.sections?.map((section) => {
+                    return {
+                        label: section.title,
+                        value: section._id
+                    };
+                });
+                setSections(sectionsList || []);
             })
             .catch(error => {
+                toast.error(error?.response?.data?.message || 'An error occurred while fetching the sections.');
+            });
+    }
 
+    // GET THE MEDIA FROM THE DATABASE
+    function getMedia(id) {
+        // GET THE TOKEN FROM THE COOKIES
+        const token = localStorage.getItem('token');
+
+        axios.get(`${process.env.API_URL}/get/media?mediaId=${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then(res => {
+                const media = res.data?.media;
+                setForm({
+                    mediaTitle: media.title,
+                    mediaType: media.mediaType,
+                    files: [],
+                    sectionId: media.sectionId
+                });
+            })
+            .catch(err => {
+                toast.error(err?.response?.data?.message || 'An error occurred while fetching the media.');
             })
     }
 
     // EFFECT TO GET THE SECTIONS
-    React.useEffect(() => {
+    useEffect(() => {
         getSections()
-    })
-
+        getMedia(mediaId);
+    }, [mediaId]);
 
     return (
         <div className={"card mb-0"}>
@@ -98,6 +138,7 @@ export default function EditMedia() {
                         type="text"
                         placeholder={"Enter Media Title"}
                         value={form.mediaTitle}
+                        autoComplete={'off'}
                         onChange={(e) => setForm({ ...form, mediaTitle: e.target.value })}
                     />
                 </div>
@@ -109,7 +150,7 @@ export default function EditMedia() {
                         placeholder={"Choose Media Type"}
                         value={form.mediaType}
                         onChange={(e) => setForm({ ...form, mediaType: e.target.value })}
-                        options={[{ label: "Video", value: "Video" }, { label: "Image", value: "Image" }]}
+                        options={[{label: "Video", value: "video"}, {label: "Image", value: "image"}, {label: "Document", value: "document"}]}
                     />
                 </div>
 
@@ -120,20 +161,16 @@ export default function EditMedia() {
                         placeholder={"Choose Media Type"}
                         value={form.sectionId}
                         onChange={(e) => setForm({ ...form, sectionId: e.target.value })}
-                        options={[{ label: "Section 1", value: "Section 1" }, {
-                            label: "Section 2",
-                            value: "Section 2"
-                        }]}
+                        options={sections || []}
                     />
                 </div>
 
                 <div className="col-12 mb-2 lg:mb-2">
-                    <label className={"mb-2 block"} htmlFor="male-image">FILES</label>
+                    <label className={"mb-2 block"} htmlFor="male-image">Media File</label>
                     <CustomFileUpload
                         setFiles={(files) => {
                             setForm({ ...form, files })
                         }}
-                        multiple
                         removeThisItem={(index) => {
                             // ITEMS COPY
                             const items = [...form?.files || []]

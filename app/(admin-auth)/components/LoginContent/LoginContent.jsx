@@ -1,7 +1,7 @@
 "use client";
 
 import {useRouter} from "next/navigation";
-import React, {useContext, useState} from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import Image from "next/image";
 // COMPONENTS
 import AppConfig from "../../../../layout/AppConfig";
@@ -57,7 +57,7 @@ const LoginContent = () => {
         setLoading(true);
         // LOGIN
         axios
-            .post(`${process.env.API_URL}/login`, {
+            .post(`${process.env.API_URL}/user/login`, {
                 username: username,
                 password: password,
             })
@@ -65,13 +65,13 @@ const LoginContent = () => {
                 setLoading(false);
                 // SAVE TOKEN IN LOCAL STORAGE AND COOKIES AND THE ROLE OF THE USER
                 localStorage.setItem("token", res.data.token);
-                localStorage.setItem("role", res.data?.user?.role);
+                localStorage.setItem("role", res.data?.role);
 
                 // SET THE COOKIES
                 document.cookie = `token=${res.data.token}; path=/`;
-                document.cookie = `role=${res.data?.user?.role}; path=/`;
+                document.cookie = `role=${res.data?.role}; path=/`;
 
-                if(res.data?.user?.role === "admin"){
+                if(res.data?.role === "admin"){
                     // REDIRECT TO HOME PAGE
                     router.push("/");
                 }else{
@@ -83,6 +83,14 @@ const LoginContent = () => {
                 toast.error(err.response?.data?.message || "Login Failed");
             });
     }
+
+    // EFFECT TO CLEAR THE COOKIES AND LOCAL STORAGE IN THE FIRST LOAD
+    useEffect(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }, []);
 
     return (
         <div className={containerClassName}>
@@ -105,7 +113,7 @@ const LoginContent = () => {
                         width={75}
                         height={75}
                     />
-                    <div className="text-900 text-4xl font-medium">AL-DAROAZA</div>
+                    <div className="text-900 text-4xl font-medium">AL-DARWAZA</div>
                 </div>
                 <div
                     style={{

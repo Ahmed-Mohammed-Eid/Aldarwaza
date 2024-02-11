@@ -9,6 +9,7 @@ import {useRouter} from "next/navigation";
 import {Dialog} from "primereact/dialog";
 import {Button} from "primereact/button";
 import Image from 'next/image';
+import isValidURL from '../../../../../helpers/isUrlValid';
 
 
 export default function SectionsList() {
@@ -17,6 +18,7 @@ export default function SectionsList() {
     const router = useRouter();
 
     //STATE FOR THE SECTIONS
+    const [sections, setSections] = React.useState([]);
     const [visible, setVisible] = React.useState(false);
     const [detailsVisible, setDetailsVisible] = React.useState(false);
     const [sectionIdToDelete, setSectionIdToDelete] = React.useState(null);
@@ -34,7 +36,8 @@ export default function SectionsList() {
             },
         })
             .then(res => {
-
+                // Update the state
+                setSections(res.data?.sections || []);
             })
             .catch(error => {
                 toast.error(error?.response?.data?.message || "An error occurred while getting the sections.");
@@ -46,17 +49,6 @@ export default function SectionsList() {
         getSections();
     }, []);
 
-    const sections = [
-        {
-            _id: 1,
-            sectionTitle: "Media 1",
-            files: [
-                'https://via.placeholder.com/150',
-                'https://via.placeholder.com/150',
-                'https://via.placeholder.com/150'
-            ]
-        }
-    ]
 
     // DELETE THE PACKAGE HANDLER
     const deleteHandler = async () => {
@@ -117,7 +109,33 @@ export default function SectionsList() {
                 emptyMessage="No sections found."
             >
                 <Column
-                    field="sectionTitle"
+                    field="image"
+                    header="Image"
+                    width="100px"
+                    body={(rowData) => {
+                        return (
+                            <div className="flex justify-center">
+                                <Image
+                                    src={rowData?.image || '/not-found.jpg'}
+                                    alt={rowData?.title}
+                                    width={50}
+                                    height={50}
+                                    style={{
+                                        width: '50px',
+                                        height: '50px',
+                                        objectFit: 'cover',
+                                        borderRadius: '50%',
+                                        cursor: 'pointer',
+                                        border: '1px solid #ccc'
+                                    }}
+                                />
+                            </div>
+                        )
+                    }}
+                />
+
+                <Column
+                    field="title"
                     header="Title"
                     sortable
                     filter
@@ -185,20 +203,30 @@ export default function SectionsList() {
                 resizable={false}
             >
                 <div className={'flex flex-column'}>
-                    <div className="field col-12">
+                    <div className="field col-12 relative">
+                        <h4>Section Image</h4>
+                        <Image
+                            src={selectedSection?.image || '/not-found.jpg'}
+                            alt={selectedSection?.title}
+                            width={600}
+                            height={300}
+                            style={{width: '100%', objectFit: 'contain'}}
+                        />
+                    </div>
+                    <div className="field col-12 relative">
                         <h4>Section Title</h4>
-                        <p>{selectedSection?.sectionTitle}</p>
+                        <p>{selectedSection?.title}</p>
                     </div>
                     <div className="field col-12">
                         <h4>Files</h4>
                         <div className="flex flex-row flex-wrap gap-2">
-                            {selectedSection?.files.map((file, index) => {
+                            {selectedSection?.sectionMedia?.map((file, index) => {
                                 return (
                                     <Image
                                         width={100}
                                         height={100}
                                         key={index}
-                                        src={file}
+                                        src={isValidURL(file) ? file : '/not-found.jpg'}
                                         alt={file}
                                         style={{
                                             width: '100px',
