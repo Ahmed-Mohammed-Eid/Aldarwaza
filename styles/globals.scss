@@ -89,3 +89,9 @@ a[href="/login"]{
 .p-fluid .p-fileupload .p-button {
     width: 3rem !important;
 }
+
+// CHANGE THE DIRECTION OF THE SHOW PASSWORD ICON IN LOGIN PAGE
+.p-password.p-component.p-inputwrapper.p-input-icon-right.w-full i{
+    right: initial;
+    left: 10px;
+}

@@ -9,28 +9,28 @@ const AppMenu = () => {
 
     const model: AppMenuItem[] = [
         {
-            label: 'Home',
-            items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+            label: 'الرئيسية',
+            items: [{ label: 'لوحة التحكم', icon: 'pi pi-fw pi-home', to: '/' }]
         },
         {
-            label: 'Sections',
+            label: 'الأقسام',
             items: [
-                {label: 'Sections List', icon: 'pi pi-fw pi-list', to: '/sections'},
-                    {label: 'Add Section', icon: 'pi pi-fw pi-plus', to: '/sections/create'}
+                {label: 'قائمة الأقسام', icon: 'pi pi-fw pi-list', to: '/sections'},
+                    {label: 'إضافة قسم', icon: 'pi pi-fw pi-plus', to: '/sections/create'}
             ]
         },
         {
-            label: 'Media',
+            label: 'الملفات',
             items: [
-                {label: 'Media List', icon: 'pi pi-fw pi-list', to: '/media'},
-                {label: 'Add Media', icon: 'pi pi-fw pi-plus', to: '/media/create'}
+                {label: 'قائمة الملفات', icon: 'pi pi-fw pi-list', to: '/media'},
+                {label: 'إضافة ملف', icon: 'pi pi-fw pi-plus', to: '/media/create'}
             ]
         },
         {
-            label: 'Settings',
+            label: 'الإعدادات',
             items: [
                 {
-                    label: 'LogOut', icon: 'pi pi-sign-out', to: '/login', command: () => {
+                    label: 'تسجيل الخروج', icon: 'pi pi-sign-out', to: '/login', command: () => {
                         // Clear local storage
                         localStorage.clear();
                         // Clear Cookies

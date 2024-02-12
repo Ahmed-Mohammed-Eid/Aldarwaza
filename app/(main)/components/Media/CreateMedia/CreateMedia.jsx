@@ -32,7 +32,7 @@ export default function CreateMedia() {
 
         // VALIDATE THE FORM
         if (!form.mediaTitle || !form.files || form.files.length < 1) {
-            toast.error('Please fill all the fields.');
+            toast.error('من فضلك قم بتعبئة جميع الحقول.');
             return;
         }
 
@@ -62,11 +62,11 @@ export default function CreateMedia() {
             }
         })
             .then(response => {
-                toast.success(response.data?.message || 'Media created successfully.');
+                toast.success(response.data?.message || 'تم إضافة الملف بنجاح.');
                 setLoading(false);
             })
             .catch(error => {
-                toast.error(error?.response?.data?.message || 'An error occurred while creating the media.');
+                toast.error(error?.response?.data?.message || 'حدث خطأ أثناء إضافة الملف.');
                 setLoading(false);
             });
     }
@@ -92,7 +92,7 @@ export default function CreateMedia() {
                 setSections(sectionsList || []);
             })
             .catch(error => {
-                toast.error(error?.response?.data?.message || 'An error occurred while fetching the sections.');
+                toast.error(error?.response?.data?.message || 'حدث خطأ أثناء جلب الأقسام.');
             });
     }
 
@@ -103,15 +103,15 @@ export default function CreateMedia() {
 
 
     return (
-        <div className={'card mb-0'}>
-            <h1 className={'text-2xl font-bold mb-4 uppercase'}>Add Media</h1>
+        <div className={'card mb-0'} dir={'rtl'}>
+            <h1 className={'text-2xl font-bold mb-4 uppercase'}>إضافة ملف</h1>
             <form className="grid formgrid p-fluid" onSubmit={createMedia}>
                 <div className="field col-12">
-                    <label htmlFor="mediaTitle">Media Title</label>
+                    <label htmlFor="mediaTitle">اسم الملف</label>
                     <InputText
                         id="mediaTitle"
                         type="text"
-                        placeholder={'Enter Media Title'}
+                        placeholder={'اسم الملف'}
                         autoComplete={'off'}
                         value={form.mediaTitle}
                         onChange={(e) => setForm({ ...form, mediaTitle: e.target.value })}
@@ -119,32 +119,32 @@ export default function CreateMedia() {
                 </div>
 
                 <div className="field col-12 md:col-6">
-                    <label htmlFor="mediaType">Media Type</label>
+                    <label htmlFor="mediaType">نوع الملف</label>
                     <Dropdown
                         id="mediaType"
-                        placeholder={'Choose Media Type'}
+                        placeholder={'اختر نوع الملف'}
                         value={form.mediaType}
                         onChange={(e) => setForm({ ...form, mediaType: e.target.value })}
-                        options={[{ label: 'Video', value: 'video' }, {
-                            label: 'Image',
+                        options={[{ label: 'فيديو', value: 'video' }, {
+                            label: 'صورة',
                             value: 'image'
-                        }, { label: 'Document', value: 'document' }]}
+                        }, { label: 'ملف', value: 'document' }]}
                     />
                 </div>
 
                 <div className="field col-12 md:col-6">
-                    <label htmlFor="sectionId">Section</label>
+                    <label htmlFor="sectionId">القسم</label>
                     <Dropdown
                         id="sectionId"
-                        placeholder={'Choose Media Type'}
+                        placeholder={'اختر القسم'}
                         value={form.sectionId}
                         onChange={(e) => setForm({ ...form, sectionId: e.target.value })}
                         options={sections || []}
                     />
                 </div>
 
-                <div className="col-12 mb-2 lg:mb-2">
-                    <label className={'mb-2 block'} htmlFor="male-image">Media File</label>
+                <div className="col-12 mb-2 lg:mb-2" dir={'ltr'}>
+                    <label className={'mb-2 block'} htmlFor="male-image" dir={'rtl'}>الملف</label>
                     <CustomFileUpload
                         setFiles={(files) => {
                             setForm({ ...form, files });
@@ -168,7 +168,7 @@ export default function CreateMedia() {
                                                           style={{
                                                               width: '2rem',
                                                               height: '2rem'
-                                                          }} /> : `Add Media`}
+                                                          }} /> : `إنشاء الملف`}
                         disabled={loading} />
                 </div>
             </form>

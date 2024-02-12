@@ -32,7 +32,7 @@ export default function EditMedia({mediaId}) {
 
         // VALIDATE THE FORM
         if (!form.mediaTitle) {
-            toast.error("Please fill all the fields.");
+            toast.error("من فضلك قم بتعبئة الاسم.");
             return;
         }
 
@@ -64,11 +64,11 @@ export default function EditMedia({mediaId}) {
             }
         })
             .then(response => {
-                toast.success(response.data?.message || "Media created successfully.");
+                toast.success(response.data?.message || "تم تعديل الملف بنجاح.");
                 setLoading(false);
             })
             .catch(error => {
-                toast.error(error?.response?.data?.message || "An error occurred while creating the media.");
+                toast.error(error?.response?.data?.message || "حدث خطأ أثناء تعديل الملف.");
                 setLoading(false);
             })
     }
@@ -93,7 +93,7 @@ export default function EditMedia({mediaId}) {
                 setSections(sectionsList || []);
             })
             .catch(error => {
-                toast.error(error?.response?.data?.message || 'An error occurred while fetching the sections.');
+                toast.error(error?.response?.data?.message || 'حدث خطأ أثناء جلب الأقسام.');
             });
     }
 
@@ -117,7 +117,7 @@ export default function EditMedia({mediaId}) {
                 });
             })
             .catch(err => {
-                toast.error(err?.response?.data?.message || 'An error occurred while fetching the media.');
+                toast.error(err?.response?.data?.message || 'حدث خطأ أثناء جلب بيانات الملف.');
             })
     }
 
@@ -128,15 +128,15 @@ export default function EditMedia({mediaId}) {
     }, [mediaId]);
 
     return (
-        <div className={"card mb-0"}>
-            <h1 className={"text-2xl font-bold mb-4 uppercase"}>Edit Media</h1>
+        <div className={"card mb-0"} dir={'rtl'}>
+            <h1 className={"text-2xl font-bold mb-4 uppercase"}>تعديل الملف</h1>
             <form className="grid formgrid p-fluid" onSubmit={editMedia}>
                 <div className="field col-12">
-                    <label htmlFor="mediaTitle">Media Title</label>
+                    <label htmlFor="mediaTitle">اسم الملف</label>
                     <InputText
                         id="mediaTitle"
                         type="text"
-                        placeholder={"Enter Media Title"}
+                        placeholder={"اسم الملف"}
                         value={form.mediaTitle}
                         autoComplete={'off'}
                         onChange={(e) => setForm({ ...form, mediaTitle: e.target.value })}
@@ -144,29 +144,32 @@ export default function EditMedia({mediaId}) {
                 </div>
 
                 <div className="field col-12 md:col-6">
-                    <label htmlFor="mediaType">Media Type</label>
+                    <label htmlFor="mediaType">نوع الملف</label>
                     <Dropdown
                         id="mediaType"
-                        placeholder={"Choose Media Type"}
+                        placeholder={"اختر نوع الملف"}
                         value={form.mediaType}
                         onChange={(e) => setForm({ ...form, mediaType: e.target.value })}
-                        options={[{label: "Video", value: "video"}, {label: "Image", value: "image"}, {label: "Document", value: "document"}]}
+                        options={[{ label: 'فيديو', value: 'video' }, {
+                            label: 'صورة',
+                            value: 'image'
+                        }, { label: 'ملف', value: 'document' }]}
                     />
                 </div>
 
                 <div className="field col-12 md:col-6">
-                    <label htmlFor="sectionId">Section</label>
+                    <label htmlFor="sectionId">القسم</label>
                     <Dropdown
                         id="sectionId"
-                        placeholder={"Choose Media Type"}
+                        placeholder={"اختر القسم"}
                         value={form.sectionId}
                         onChange={(e) => setForm({ ...form, sectionId: e.target.value })}
                         options={sections || []}
                     />
                 </div>
 
-                <div className="col-12 mb-2 lg:mb-2">
-                    <label className={"mb-2 block"} htmlFor="male-image">Media File</label>
+                <div className="col-12 mb-2 lg:mb-2" dir={'ltr'}>
+                    <label className={"mb-2 block"} htmlFor="male-image" dir={'rtl'}>الملف</label>
                     <CustomFileUpload
                         setFiles={(files) => {
                             setForm({ ...form, files })

@@ -43,14 +43,14 @@ const LoginContent = () => {
         const passwordRegex = /^[a-zA-Z0-9]+$/;
 
         if (!usernameRegex.test(username)) {
-            toast.error("Username is not valid");
+            toast.error("الرجاء إدخال اسم مستخدم صحيح");
             // ADD INVALID CLASS TO USERNAME INPUT
             usernameRef.current.classList.add("p-invalid");
             return;
         }
 
         if (!passwordRegex.test(password)) {
-            toast.error("Password is not valid");
+            toast.error("الرجاء إدخال كلمة مرور صحيحة");
             return;
         }
 
@@ -75,12 +75,12 @@ const LoginContent = () => {
                     // REDIRECT TO HOME PAGE
                     router.push("/");
                 }else{
-                    toast.error("You are not authorized to access this page");
+                    toast.error("انت لا تمتلك صلاحيات الدخول لهذا الموقع");
                 }
             })
             .catch((err) => {
                 setLoading(false);
-                toast.error(err.response?.data?.message || "Login Failed");
+                toast.error(err.response?.data?.message || "حدث خطأ ما الرجاء المحاولة مرة أخرى");
             });
     }
 
@@ -93,7 +93,7 @@ const LoginContent = () => {
     }, []);
 
     return (
-        <div className={containerClassName}>
+        <div className={containerClassName} dir={'rtl'}>
             <div className="flex flex-column align-items-center justify-content-center">
                 <div style={{
                     display: "flex",
@@ -134,14 +134,14 @@ const LoginContent = () => {
                                 htmlFor="username"
                                 className="block text-900 text-xl font-medium mb-2"
                             >
-                                Username
+                                اسم المستخدم
                             </label>
                             <InputText
                                 inputid="username"
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Username"
+                                placeholder="اسم المستخدم"
                                 className="w-full md:w-30rem mb-5"
                                 style={{padding: "1rem"}}
                                 ref={usernameRef}
@@ -151,13 +151,13 @@ const LoginContent = () => {
                                 htmlFor="password1"
                                 className="block text-900 font-medium text-xl mb-2"
                             >
-                                Password
+                                كلمة المرور
                             </label>
                             <Password
                                 inputid="password1"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Password"
+                                placeholder="كلمة المرور"
                                 toggleMask
                                 className="w-full mb-5"
                                 inputClassName="w-full p-3 md:w-30rem"
@@ -181,7 +181,7 @@ const LoginContent = () => {
                                             }}
                                         />
                                     ) : (
-                                        "Login"
+                                        "تسجيل الدخول"
                                     )
                                 }
                                 className="w-full p-3 text-xl"

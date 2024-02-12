@@ -54,7 +54,7 @@ export default function EditSection({sectionId }) {
 
         // VALIDATE THE FORM
         if (!form.sectionTitle) {
-            toast.error("Please fill all the fields.");
+            toast.error("من فضاك أدخل عنوان القسم.");
             return;
         }
 
@@ -84,32 +84,32 @@ export default function EditSection({sectionId }) {
             }
         })
             .then(response => {
-                toast.success(response.data?.message || "Media created successfully.");
+                toast.success(response.data?.message || "تم تعديل القسم بنجاح.");
                 setLoading(false);
             })
             .catch(error => {
-                toast.error(error?.response?.data?.message || "An error occurred while creating the section.");
+                toast.error(error?.response?.data?.message || "حدث خطأ ما.");
                 setLoading(false);
             })
     }
 
 
     return (
-        <div className={"card mb-0"}>
-            <h1 className={"text-2xl font-bold mb-4 uppercase"}>Edit Section</h1>
+        <div className={"card mb-0"} dir={'rtl'}>
+            <h1 className={"text-2xl font-bold mb-4 uppercase"}>تعديل القسم</h1>
             <form className="grid formgrid p-fluid" onSubmit={editSection}>
                 <div className="field col-12">
-                    <label htmlFor="sectionTitle">Section Title</label>
+                    <label htmlFor="sectionTitle">اسم القسم</label>
                     <InputText
                         id="sectionTitle"
                         type="text"
-                        placeholder={"Enter Media Title"}
+                        placeholder={"اسم القسم"}
                         value={form.sectionTitle}
                         onChange={(e) => setForm({ ...form, sectionTitle: e.target.value })}
                     />
                 </div>
-                <div className="col-12 mb-2 lg:mb-2">
-                    <label className={"mb-2 block"} htmlFor="male-image">Section Image</label>
+                <div className="col-12 mb-2 lg:mb-2" dir={'ltr'}>
+                    <label className={"mb-2 block"} htmlFor="male-image" dir={'rtl'}>صورة القسم</label>
                     <CustomFileUpload
                         setFiles={(files) => {
                             setForm({ ...form, files })
@@ -133,7 +133,7 @@ export default function EditSection({sectionId }) {
                                                           style={{
                                                               width: '2rem',
                                                               height: '2rem'
-                                                          }} /> : `Edit Section`}
+                                                          }} /> : `تعديل القسم`}
                         disabled={loading} />
                 </div>
             </form>

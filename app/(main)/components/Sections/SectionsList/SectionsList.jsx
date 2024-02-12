@@ -110,7 +110,7 @@ export default function SectionsList() {
             >
                 <Column
                     field="image"
-                    header="Image"
+                    header="الصورة"
                     width="100px"
                     body={(rowData) => {
                         return (
@@ -136,7 +136,7 @@ export default function SectionsList() {
 
                 <Column
                     field="title"
-                    header="Title"
+                    header="اسم القسم"
                     sortable
                     filter
                     style={{width: '70%'}}
@@ -144,7 +144,7 @@ export default function SectionsList() {
 
                 <Column
                     field={'_id'}
-                    header={'Actions'}
+                    header={'الإجراءات'}
                     body={(rowData) => {
                         return (
                             <div className="flex justify-center gap-2">
@@ -155,7 +155,7 @@ export default function SectionsList() {
                                         setSelectedSection(rowData);
                                     }}
                                 >
-                                    View Details
+                                    عرض التفاصيل
                                 </button>
                                 <button
                                     className="editButton"
@@ -163,7 +163,7 @@ export default function SectionsList() {
                                         router.push(`/sections/${rowData._id}`)
                                     }}
                                 >
-                                    Edit
+                                    تعديل
                                 </button>
                                 <button
                                     className="deleteButton"
@@ -172,7 +172,7 @@ export default function SectionsList() {
                                         setSectionIdToDelete(rowData._id);
                                     }}
                                 >
-                                    Delete
+                                    حذف
                                 </button>
                             </div>
                         )
@@ -189,12 +189,12 @@ export default function SectionsList() {
                 draggable={false}
                 resizable={false}>
                 <p className="m-0">
-                    Are you sure you want to delete this section?
+                    هل أنت متأكد من حذف القسم؟
                 </p>
             </Dialog>
 
             <Dialog
-                header="DETAILS"
+                header="التفاصيل"
                 visible={detailsVisible}
                 position={"center"}
                 style={{width: '90%', maxWidth: '650px'}}
@@ -202,9 +202,9 @@ export default function SectionsList() {
                 draggable={false}
                 resizable={false}
             >
-                <div className={'flex flex-column'}>
+                <div className={'flex flex-column'} dir={'rtl'}>
                     <div className="field col-12 relative">
-                        <h4>Section Image</h4>
+                        <h4>صورة القسم</h4>
                         <Image
                             src={selectedSection?.image || '/not-found.jpg'}
                             alt={selectedSection?.title}
@@ -214,11 +214,11 @@ export default function SectionsList() {
                         />
                     </div>
                     <div className="field col-12 relative">
-                        <h4>Section Title</h4>
+                        <h4>اسم القسم</h4>
                         <p>{selectedSection?.title}</p>
                     </div>
                     <div className="field col-12">
-                        <h4>Files</h4>
+                        <h4>الملفات</h4>
                         <div className="flex flex-row flex-wrap gap-2">
                             {selectedSection?.sectionMedia?.map((file, index) => {
                                 return (
@@ -226,7 +226,7 @@ export default function SectionsList() {
                                         width={100}
                                         height={100}
                                         key={index}
-                                        src={isValidURL(file) ? file : '/not-found.jpg'}
+                                        src={isValidURL(file.mediaPath) ? file.mediaPath : '/not-found.jpg'}
                                         alt={file}
                                         style={{
                                             width: '100px',

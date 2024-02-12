@@ -38,7 +38,7 @@ export default function MediaList() {
                 console.log(res.data);
             })
             .catch(error => {
-                toast.error(error?.response?.data?.message || 'An error occurred while getting the media.');
+                toast.error(error?.response?.data?.message || 'حدث خطأ ما أثناء جلب الوسائط.');
             });
     }
 
@@ -62,14 +62,14 @@ export default function MediaList() {
         })
             .then(_ => {
                 // Show notification
-                toast.success('Media Deleted Successfully');
+                toast.success('تم حذف الوسائط بنجاح.');
                 // Hide the dialog
                 setVisible(false);
                 // Update the State
                 getMedia();
             })
             .catch(err => {
-                toast.error(err.response?.data?.message || 'An error occurred while deleting the media.');
+                toast.error(err.response?.data?.message || 'حدث خطأ ما أثناء حذف الوسائط.');
             });
     };
 
@@ -107,7 +107,7 @@ export default function MediaList() {
             >
                 <Column
                     field="mediaPath"
-                    header="Image"
+                    header="الصورة"
                     width="100px"
                     body={(rowData) => {
                         return (
@@ -133,21 +133,28 @@ export default function MediaList() {
 
                 <Column
                     field="title"
-                    header="Title"
+                    header="الاسم"
                     sortable
                     filter
                 />
 
                 <Column
                     field="mediaType"
-                    header="Type"
+                    header="النوع"
                     sortable
                     filter
+                    body={(rowData) => {
+                        return (
+                            <div>
+                                {rowData?.mediaType === 'image' ? 'صورة' : (rowData?.mediaType === 'video' ? 'فيديو' : 'ملف')}
+                            </div>
+                        );
+                    }}
                 />
 
                 <Column
                     field="mediaPath"
-                    header="Media Link"
+                    header="الرابط"
                     sortable
                     filter
                     // MAKE AN ICON TO OPEN THE URL IN A NEW TAB
@@ -174,7 +181,7 @@ export default function MediaList() {
 
                 <Column
                     field="sectionId"
-                    header="Section Id"
+                    header="معرف القسم"
                     sortable
                     filter
                     // ADD THE COPY WHEN CLICK TO THE SECTION ID
@@ -199,7 +206,7 @@ export default function MediaList() {
 
                 <Column
                     field={'_id'}
-                    header={'Actions'}
+                    header={'الإجراءات'}
                     style={{ width: '20%' }}
                     body={(rowData) => {
                         return (
@@ -210,7 +217,7 @@ export default function MediaList() {
                                         router.push(`/media/${rowData._id}`);
                                     }}
                                 >
-                                    Edit
+                                    تعديل
                                 </button>
                                 <button
                                     className="deleteButton"
@@ -219,7 +226,7 @@ export default function MediaList() {
                                         setMediaIdToDelete(rowData._id);
                                     }}
                                 >
-                                    Delete
+                                    حذف
                                 </button>
                             </div>
                         );
@@ -236,7 +243,7 @@ export default function MediaList() {
                 draggable={false}
                 resizable={false}>
                 <p className="m-0">
-                    Are you sure you want to delete this media?
+                    هل أنت متأكد من حذف الوسائط؟
                 </p>
             </Dialog>
         </>
