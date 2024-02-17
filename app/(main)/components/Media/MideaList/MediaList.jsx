@@ -180,28 +180,11 @@ export default function MediaList() {
                 />
 
                 <Column
-                    field="sectionId"
+                    field="sectionId.title"
                     header="معرف القسم"
                     sortable
                     filter
                     // ADD THE COPY WHEN CLICK TO THE SECTION ID
-                    body={(rowData) => {
-                        return (
-                            <div
-                                onClick={() => {
-                                    navigator.clipboard.writeText(rowData.sectionId);
-                                    toast.success('Section Id Copied');
-                                }}
-                                style={{
-                                    userSelect: 'none',
-                                    cursor: 'pointer',
-                                    color: '#007bff',
-                                }}
-                            >
-                                {rowData.sectionId}
-                            </div>
-                        );
-                    }}
                 />
 
                 <Column

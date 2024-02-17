@@ -81,6 +81,32 @@ a[href="/login"]{
     color: #fff;
 }
 
+.action1{
+    background-color: #623a94;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+    border: 0;
+}
+
+.action1:hover{
+    background-color: #732673;
+    color: #fff;
+}
+
+.action1:active{
+    transform: scale(0.95);
+}
+
+
+.action1:disabled{
+    background-color: #d3d3d3;
+    color: #fff;
+}
+
+
 .copyButton:active{
     transform: scale(0.95);
 }

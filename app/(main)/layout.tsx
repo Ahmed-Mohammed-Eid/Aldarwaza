@@ -30,26 +30,24 @@ export default async function AppLayout({ children }: AppLayoutProps) {
 
     // SEND A REQUEST TO CHECK IF THE TOKEN IS VALID
     // GET THE TOKEN FROM THE COOKIE
-    const token = cookies().get("token");
-    const role = cookies().get("role");
+    const token = cookies().get('token');
+    const role = cookies().get('role');
 
-    if (!token || !role || role.value !== "admin") {
+    if (!token || !role || role.value !== 'admin') {
         // REDIRECT TO THE LOGIN PAGE
-        redirect("/login");
+        redirect('/login');
     }
 
     // CHECK IF THE TOKEN IS VALID
-    // await axios.get(`${process.env.API_URL}/get/verify/token`, {
-    //     params: {
-    //         token: token.value
-    //     }
-    // }).then((response) => {
-    //     if(!response.data.success) {
-    //         redirect("/login");
-    //     }
-    // }).catch(() => {
-    //     redirect("/login");
-    // });
+    await axios.get(`${process.env.API_URL}/get/verify/token?token=${token?.value}`)
+        .then((response) => {
+            if (!response.data.success) {
+                redirect("/login");
+            }
+        }).catch((error) => {
+            console.log(error);
+            redirect("/login");
+        });
 
     return <Layout>{children}</Layout>;
 }

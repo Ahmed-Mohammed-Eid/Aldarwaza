@@ -27,6 +27,19 @@ const AppMenu = () => {
             ]
         },
         {
+            label: 'المعاينات',
+            items: [
+                {label: 'قائمة المعاينات', icon: 'pi pi-fw pi-list', to: '/assessment'},
+                // {label: 'إضافة زيارة', icon: 'pi pi-fw pi plus', to: '/visits/create'}
+            ]
+        },
+        {
+            label: 'الصيانة',
+            items: [
+                {label: 'قائمة الصيانات', icon: 'pi pi-fw pi-list', to: '/maintenance'},
+            ]
+        },
+        {
             label: 'الإعدادات',
             items: [
                 {
